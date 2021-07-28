@@ -10,13 +10,13 @@ spring:
         url: jdbc:mysql://localhost:3306/database?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true&failOverReadOnly=false&serverTimezone=GMT%2B8&allowMultiQueries=true
         username: root
         password: root
-     initial-size: 10
+     initial-size: 1
      # 最大连接数
-     max-active: 50
+     max-active: 5
      #最小连接数
-     min-idle: 10
+     min-idle: 1
      #获取连接等待超时时间
-     max-wait: 5000
+     max-wait: 3000
      pool-prepared-statements: true #是否缓存preparedStatement，也就是PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
      max-pool-prepared-statement-per-connection-size: 20
      validation-query: SELECT 1 FROM DUAL

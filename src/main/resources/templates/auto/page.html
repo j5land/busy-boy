@@ -90,7 +90,7 @@
 										表名称
 							        </label>
 							        <div class="layui-input-inline">
-							            <input id="tableName" type="text" name="tableName" autocomplete="off" class="layui-input">
+							            <input id="tableName" type="text" name="tableName" readonly="readonly" autocomplete="off" class="layui-input" lay-verify="required" />
 							        </div>
 						    	</div>
 						    	<div class="layui-inline">
@@ -101,6 +101,12 @@
 							            <input id="tableComment" type="text" name="tableComment" autocomplete="off" class="layui-input">
 							        </div>
 							    </div>
+								<div class="layui-inline">
+									<label class="layui-form-label">保存自定义路径</label>
+									<div class="layui-input-inline">
+										<input th:value="${parentPath}" type="text" name="parentPath" autocomplete="off" placeholder="请输入标题" class="layui-input" lay-verify="required" />
+									</div>
+								</div>
 						    </div>
 						    <div class="layui-form-item">
 						    	<div class="layui-inline">
@@ -108,13 +114,13 @@
 							           	作者
 							        </label>
 							        <div class="layui-input-inline">
-							            <input th:value="${author}" type="text" name="author" autocomplete="off" class="layui-input">
+							            <input th:value="${author}" type="text" name="author" autocomplete="off" class="layui-input" lay-verify="required" />
 							        </div>
 						    	</div>
 								<div class="layui-inline">
-									<label class="layui-form-label">保存自定义路径</label>
+									<label class="layui-form-label">代码父包名</label>
 									<div class="layui-input-inline">
-										<input th:value="${parentPath}" type="text" name="parentPath" autocomplete="off" placeholder="请输入标题" class="layui-input">
+										<input th:value="${parentPack}" type="text" name="parentPack" autocomplete="off" placeholder="请输入包名" class="layui-input" lay-verify="required" />
 									</div>
 								</div>
 						    </div>

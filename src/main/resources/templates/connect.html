@@ -10,21 +10,33 @@
         <div class="main-container">
             <div class="main-container">
                 <div class="layui-form-item">
-                    <label class="layui-form-label">数据库连接</label>
+                    <label class="layui-form-label">Host:</label>
                     <div class="layui-input-block">
-                        <input type="text" name="url" autocomplete="off" placeholder="jdbc:mysql://localhost:3306/database" class="layui-input" lay-verify="required" />
+                        <input type="text" name="host" autocomplete="off" placeholder="localhost" class="layui-input" lay-verify="required" />
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">用户名</label>
+                    <label class="layui-form-label">Username:</label>
                     <div class="layui-input-block">
                         <input type="text" name="username" autocomplete="off" placeholder="root" class="layui-input" lay-verify="required" />
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label">密码</label>
+                    <label class="layui-form-label">Password:</label>
                     <div class="layui-input-block">
                         <input type="text" name="password" autocomplete="off" placeholder="root" class="layui-input" lay-verify="required" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">Database:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="database" autocomplete="off" placeholder="DatabaseName" class="layui-input" lay-verify="required" />
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">Port:</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="port" autocomplete="off" value="3306" class="layui-input" lay-verify="required" />
                     </div>
                 </div>
             </div>
@@ -51,6 +63,7 @@
         let MODULE_PATH = rootPath+"/auto";
         //保存
         form.on('submit(store-save)', function (data) {
+            let loading = layer.load();
             $.ajax({
                 url: MODULE_PATH+'/connect',
                 data: data.field,
@@ -58,14 +71,15 @@
                 contentType: 'application/x-www-form-urlencoded',
                 type: 'post',
                 success: function (result) {
-                    if (result.status.code==200) {
+                    layer.close(loading);
+                    if (result.code==200) {
                         layer.msg("连接成功", {icon: 1, time: 2000}, function () {
                             parent.layer.close(parent.layer.getFrameIndex(window.name));//关闭当前页
                             //跳转
                             location.href = MODULE_PATH + "/page"
                         });
                     } else {
-                        layer.msg(result.msg, {icon: 2, time: 1000});
+                        layer.msg("连接失败："+result.msg, {icon: 2, time: 5000});
                     }
                 }
             })

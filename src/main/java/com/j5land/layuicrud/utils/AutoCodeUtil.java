@@ -56,7 +56,7 @@ public class AutoCodeUtil {
         //配置文件
         map.put("SnowflakeIdWorker", SnowflakeIdWorker.class);
         //class类路径
-        map.put("parentPack", autoCodeConfig.getConfigkey("parentPack"));
+        map.put("parentPack", autoConfigModel.getParentPack());
         //作者
         map.put("author", autoConfigModel.getAuthor());
         //时间
@@ -126,7 +126,7 @@ public class AutoCodeUtil {
         //配置文件
         map.put("SnowflakeIdWorker", SnowflakeIdWorker.class);
         //class类路径
-        map.put("parentPack", properties.getConfigkey("parentPack"));
+        map.put("parentPack", autoConfigModel.getParentPack());
         //作者
         map.put("author", autoConfigModel.getAuthor());
         //时间
@@ -168,7 +168,7 @@ public class AutoCodeUtil {
         //配置文件
         map.put("SnowflakeIdWorker", SnowflakeIdWorker.class);
         //class类路径
-        map.put("parentPack", properties.getConfigkey("parentPack"));
+        map.put("parentPack", autoConfigModel.getParentPack());
         //作者
         map.put("author", autoConfigModel.getAuthor());
         //时间

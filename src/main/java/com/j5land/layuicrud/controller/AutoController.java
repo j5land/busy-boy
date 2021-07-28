@@ -7,6 +7,7 @@ import com.j5land.layuicrud.model.SystemTables;
 import com.j5land.layuicrud.model.auto.BeanColumn;
 import com.j5land.layuicrud.model.auto.TableInfo;
 import com.j5land.layuicrud.model.request.AutoConfigModel;
+import com.j5land.layuicrud.model.response.AjaxResult;
 import com.j5land.layuicrud.model.response.Result;
 import com.j5land.layuicrud.model.response.ResultPage;
 import com.j5land.layuicrud.model.response.SystemTablesVo;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -60,17 +63,35 @@ public class AutoController {
      */
     @PostMapping("/connect")
     @ResponseBody
-    public Result connect(String url, String username, String password) {
-        if (StringUtils.isNotEmpty(url)
-                && StringUtils.isNotEmpty(username)
-                && StringUtils.isNotEmpty(password)){
-            DruidDataSource druidDataSource = new DruidDataSource();
-            druidDataSource.setUrl(url);
-            druidDataSource.setUsername(username);
-            druidDataSource.setPassword(password);
-            DynamicDataSource.setDataSource(druidDataSource);
+    public AjaxResult connect(String host, String port, String database, String username, String password) {
+        if (StringUtils.isAnyEmpty(host, port, database, username, password)){
+            return AjaxResult.error("缺少数据库连接参数");
         }
-        return Result.build(null);
+        String url = "jdbc:mysql://" + host + ":" + port + "/" + database;
+        DruidDataSource druidDataSource = new DruidDataSource();
+        druidDataSource.setUrl(url);
+        druidDataSource.setUsername(username);
+        druidDataSource.setPassword(password);
+        druidDataSource.setMinIdle(1);
+        druidDataSource.setMaxActive(2);
+        druidDataSource.setMaxWait(3000);
+        DynamicDataSource.setDataSource(druidDataSource);
+        Connection connection = null;
+        try {
+            connection = DynamicDataSource.getDataSource().getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return AjaxResult.error(e.getMessage());
+        } finally {
+            if (Objects.nonNull(connection)){
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return AjaxResult.success();
     }
 
     /**
@@ -102,6 +123,7 @@ public class AutoController {
         modelMap.put("author", AutoCodeProperties.getConfig().getProperty("author"));
         modelMap.put("email", AutoCodeProperties.getConfig().getProperty("author"));
         modelMap.put("parentPath", AutoCodeProperties.getConfig().getProperty("parentPath"));
+        modelMap.put("parentPack", AutoCodeProperties.getConfig().getProperty("parentPack"));
         return  "auto/page";
     }
 
@@ -159,7 +181,7 @@ public class AutoController {
         IOUtils.closeQuietly(zip);
         b = outputStream.toByteArray();
         response.reset();
-        response.setHeader("Content-Disposition", "attachment; filename=\"v2.zip\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"busy-boy.zip\"");
         response.addHeader("Content-Length", "" + b.length);
         response.setContentType("application/octet-stream; charset=UTF-8");
         IOUtils.write(b, response.getOutputStream());

@@ -14,6 +14,7 @@ public class AutoConfigModel {
 	private String pid;
 	/**自定义路径**/
 	private String parentPath;
+	private String parentPack;
 	public String getTableName() {
 		return tableName;
 	}
@@ -44,13 +45,23 @@ public class AutoConfigModel {
 	public void setParentPath(String parentPath) {
 		this.parentPath = parentPath;
 	}
-	public AutoConfigModel(String tableName, String tableComment, String author, String pid, String parentPath) {
+
+	public String getParentPack() {
+		return parentPack;
+	}
+
+	public void setParentPack(String parentPack) {
+		this.parentPack = parentPack;
+	}
+
+	public AutoConfigModel(String tableName, String tableComment, String author, String pid, String parentPath, String parentPack) {
 		super();
 		this.tableName = tableName;
 		this.tableComment = tableComment;
 		this.author = author;
 		this.pid = pid;
 		this.parentPath = parentPath;
+		this.parentPack = parentPack;
 	}
 	public AutoConfigModel() {
 		super();
